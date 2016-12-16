@@ -46,19 +46,20 @@ def download_wikis(fb):
             filename = headline.replace('/', '') + '.html'
             path = os.path.join(wiki_name, filename)
 
-            with open(path, 'w') as f:
-                try:
-                    f.write(body)
-                except:
-                    print("Unable to write {} - {}".format(wiki_name, headline))
-
+            # Block for just writing out HTML
             if False:
-                # Save body to file with article title as filename
-                try:
-                    output = pypandoc.convert_text(body, to='md', format='html',
-                                                   outputfile=path)
-                except:
-                    print("Unable to write {} - {}".format(wiki_name, headline))
+                with open(path, 'w') as f:
+                    try:
+                        f.write(body)
+                    except:
+                        print("Unable to write {} - {}".format(wiki_name, headline))
+
+            # Convert to markdown and write
+            try:
+                output = pypandoc.convert_text(body, to='md', format='html',
+                                               outputfile=path)
+            except:
+                print("Unable to write {} - {}".format(wiki_name, headline))
 
 if __name__ == '__main__':
     fb = FogBugz(fbSettings.URL, fbSettings.TOKEN)
